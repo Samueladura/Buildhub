@@ -3,7 +3,19 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const sparklineData = [20, 35, 28, 50, 42, 60, 55, 70, 65, 80, 72, 88];
+function useLiveSparkline(initial: number[], interval = 2000) {
+  const [data, setData] = useState(initial);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setData((prev) => {
+        const next = [...prev.slice(1), Math.max(5, Math.min(95, prev[prev.length - 1] + (Math.random() * 14 - 7)))];
+        return next.map((v) => Math.round(v));
+      });
+    }, interval);
+    return () => clearInterval(id);
+  }, [interval]);
+  return data;
+}
 
 function Sparkline({ data, color = "#3B82F6" }: { data: number[]; color?: string }) {
   const max = Math.max(...data);
@@ -20,6 +32,17 @@ function Sparkline({ data, color = "#3B82F6" }: { data: number[]; color?: string
     .join(" ");
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-6 overflow-visible">
+      <defs>
+        <linearGradient id={`grad-${color.replace("#", "")}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.3" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <polyline
+        fill={`url(#grad-${color.replace("#", "")})`}
+        stroke="none"
+        points={`0,${h} ${points} ${w},${h}`}
+      />
       <polyline
         fill="none"
         stroke={color}
@@ -28,13 +51,30 @@ function Sparkline({ data, color = "#3B82F6" }: { data: number[]; color?: string
         strokeLinejoin="round"
         points={points}
       />
-      <circle cx={w} cy={h - ((data[data.length - 1] - min) / range) * h} r="2" fill={color} />
+      <circle cx={w} cy={h - ((data[data.length - 1] - min) / range) * h} r="2.5" fill={color}>
+        <animate attributeName="r" values="2.5;4;2.5" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1;0.6;1" dur="2s" repeatCount="indefinite" />
+      </circle>
     </svg>
   );
 }
 
 function TrafficChart() {
-  const data = [45, 52, 48, 65, 58, 72, 68, 80, 75, 88, 82, 95];
+  const baseData = [45, 52, 48, 65, 58, 72, 68, 80, 75, 88, 82, 95];
+  const [data, setData] = useState(baseData);
+  const [animKey, setAnimKey] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setData((prev) => {
+        const next = [...prev.slice(1), Math.max(20, Math.min(100, prev[prev.length - 1] + (Math.random() * 16 - 8)))];
+        return next.map((v) => Math.round(v));
+      });
+      setAnimKey((k) => k + 1);
+    }, 2200);
+    return () => clearInterval(id);
+  }, []);
+
   const max = Math.max(...data);
   const w = 280;
   const h = 64;
@@ -51,15 +91,35 @@ function TrafficChart() {
 
   return (
     <div className="relative w-full h-16">
-      <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-full" preserveAspectRatio="none">
+      <svg key={animKey} viewBox={`0 0 ${w} ${h}`} className="w-full h-full" preserveAspectRatio="none">
         <defs>
           <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.25" />
+            <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.35" />
             <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.02" />
           </linearGradient>
         </defs>
-        <polyline fill="none" stroke="#3B82F6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" points={points} />
-        <polygon fill="url(#chartGrad)" points={areaPoints} />
+        <polyline
+          fill="none"
+          stroke="#3B82F6"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          points={points}
+        >
+          <animate attributeName="stroke-opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite" />
+        </polyline>
+        <polygon fill="url(#chartGrad)" points={areaPoints}>
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite" />
+        </polygon>
+        {data.map((v, i) => {
+          const x = i * barW + barW / 2;
+          const y = h - (v / max) * h;
+          return (
+            <circle key={i} cx={x} cy={y} r="1.5" fill="#3B82F6" opacity="0.8">
+              <animate attributeName="r" values="1.5;2.5;1.5" dur="2s" repeatCount="indefinite" begin={`${i * 0.1}s`} />
+            </circle>
+          );
+        })}
       </svg>
     </div>
   );
@@ -67,17 +127,18 @@ function TrafficChart() {
 
 function Hero() {
   const [activeSidebar, setActiveSidebar] = useState("Overview");
-  const [displayedProjects, setDisplayedProjects] = useState([
+  const [displayedProjects, setDisplayedProjects] = useState<Array<{ id: string; client: string; service: string; status: string; deadline: string; progress: number; eta?: string }>>([
     { id: "PRJ-1042", client: "Finova App", service: "Mobile Dev + UI/UX", status: "In Progress", deadline: "2 days", progress: 75 },
     { id: "PRJ-1041", client: "GreenLeaf Co.", service: "Website + Branding", status: "Review", deadline: "Today", progress: 90 },
     { id: "PRJ-1040", client: "HealthPulse", service: "Product Design", status: "In Progress", deadline: "5 days", progress: 45 },
   ]);
+  const sparkline1 = useLiveSparkline([20, 35, 28, 50, 42, 60, 55, 70, 65, 80, 72, 88], 1800);
+  const sparkline2 = useLiveSparkline([15, 30, 25, 45, 38, 55, 50, 65, 60, 75, 68, 82], 2100);
+  const sparkline3 = useLiveSparkline([60, 65, 58, 70, 62, 75, 68, 80, 73, 85, 78, 90], 1900);
 
-  const baseProjects = [
-    { id: "PRJ-1042", client: "Finova App", service: "Mobile Dev + UI/UX", status: "In Progress", deadline: "2 days", progress: 75 },
-    { id: "PRJ-1041", client: "GreenLeaf Co.", service: "Website + Branding", status: "Review", deadline: "Today", progress: 90 },
-    { id: "PRJ-1040", client: "HealthPulse", service: "Product Design", status: "In Progress", deadline: "5 days", progress: 45 },
-  ];
+  const [activeProjects, setActiveProjects] = useState(12);
+  const [revenue, setRevenue] = useState(24);
+  const [nps, setNps] = useState(92);
 
   const statusColor = {
     "In Progress": "bg-blue-400/10 text-blue-400 border-blue-400/25",
@@ -112,20 +173,40 @@ function Hero() {
       );
     }, 1800);
 
+    const statsInterval = setInterval(() => {
+      setActiveProjects((prev) => Math.max(8, Math.min(18, prev + (Math.random() > 0.5 ? 1 : -1))));
+      setRevenue((prev) => Math.max(18, Math.min(32, prev + (Math.random() * 2 - 1))));
+      setNps((prev) => Math.max(85, Math.min(98, prev + (Math.random() * 4 - 2))));
+    }, 3000);
+
     return () => {
       clearInterval(sidebarInterval);
       clearInterval(projectInterval);
+      clearInterval(statsInterval);
     };
   }, []);
 
   const liveProjects = displayedProjects.map((project) => {
-    const base = baseProjects.find((b) => b.id === project.id);
-    if (!base) return project;
     const daysLeft = project.deadline === "Today" ? 0 : project.deadline === "2 days" ? 2 : 5;
     const eta = new Date(Date.now() + daysLeft * 86400000);
     const timeString = eta.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
     return { ...project, eta: timeString };
   });
+
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  const revenueFormatted = revenue.toFixed(0);
+  const npsFormatted = Math.round(nps);
+
+  const stats = [
+    { label: "Active Projects", value: activeProjects.toString(), trend: "↑ 3", icon: "folder_open", color: "text-blue-400", sparkline: sparkline1 },
+    { label: "This Month", value: `$${revenueFormatted}K`, trend: "↑ 18%", icon: "payments", color: "text-green-400", sparkline: sparkline2 },
+    { label: "Client NPS", value: npsFormatted.toString(), trend: "Top 5%", icon: "thumb_up", color: "text-cyan-400", sparkline: sparkline3 },
+  ];
 
   return (
     <section className="relative overflow-hidden pt-28 pb-20 lg:pt-36 lg:pb-28 bg-white">
@@ -215,12 +296,17 @@ function Hero() {
                 </div>
                 <span className="text-slate-500 text-[10px] ml-2 font-sans font-medium">Studio — Client Dashboard</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-green-500/10 border border-green-500/20 rounded-full px-2.5 py-0.5 text-[10px] text-green-400 font-bold">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+              <div className="flex items-center gap-3">
+                <span className="text-slate-600 text-[9px] font-mono">
+                  {now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
                 </span>
-                LIVE
+                <div className="flex items-center gap-1.5 bg-green-500/10 border border-green-500/20 rounded-full px-2.5 py-0.5 text-[10px] text-green-400 font-bold">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                  </span>
+                  LIVE
+                </div>
               </div>
             </div>
 
@@ -263,19 +349,15 @@ function Hero() {
                 <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 custom-scrollbar">
                   {/* Stats */}
                   <div className="grid grid-cols-3 gap-3">
-                    {[
-                      { label: "Active Projects", value: "12", trend: "↑ 3", icon: "folder_open", color: "text-blue-400" },
-                      { label: "This Month", value: "$24K", trend: "↑ 18%", icon: "payments", color: "text-green-400" },
-                      { label: "Client NPS", value: "92", trend: "Top 5%", icon: "thumb_up", color: "text-cyan-400" },
-                    ].map((stat) => (
+                    {stats.map((stat) => (
                       <div key={stat.label} className="bg-[#0F1520] border border-slate-800/60 rounded-xl p-3 flex flex-col gap-1.5 hover:border-slate-700 transition-colors">
                         <div className="flex items-center justify-between">
                           <span className={`material-symbols-outlined text-sm ${stat.color}`}>{stat.icon}</span>
-                          <span className="text-[9px] text-green-400 font-medium">{stat.trend}</span>
+                          <span className="text-[9px] text-green-400 font-medium animate-pulse">{stat.trend}</span>
                         </div>
                         <p className="text-slate-500 text-[9px] uppercase tracking-wider font-medium">{stat.label}</p>
-                        <p className={`text-base font-bold ${stat.color}`}>{stat.value}</p>
-                        <Sparkline data={sparklineData} color={stat.color.includes("blue") ? "#3B82F6" : stat.color.includes("green") ? "#22C55E" : "#06B6D4"} />
+                        <p key={stat.value} className={`text-base font-bold ${stat.color} transition-all duration-300`}>{stat.value}</p>
+                        <Sparkline data={stat.sparkline} color={stat.color.includes("blue") ? "#3B82F6" : stat.color.includes("green") ? "#22C55E" : "#06B6D4"} />
                       </div>
                     ))}
                   </div>
@@ -338,9 +420,9 @@ function Hero() {
                               <td className="px-4 py-2.5 text-right">
                                 <div className="flex items-center justify-end gap-2">
                                   <div className="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                                    <div className="h-full bg-blue-500 rounded-full transition-all duration-500" style={{ width: `${project.progress}%` }} />
+                                    <div key={project.progress} className="h-full bg-blue-500 rounded-full transition-all duration-500" style={{ width: `${project.progress}%` }} />
                                   </div>
-                                  <span className="text-slate-400 font-mono w-8 text-right">{project.progress}%</span>
+                                  <span key={`pct-${project.progress}`} className="text-slate-400 font-mono w-8 text-right transition-all duration-300">{project.progress}%</span>
                                 </div>
                               </td>
                             </tr>
