@@ -4,118 +4,113 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 function Products() {
-  const [activeTab, setActiveTab] = useState("compute");
+  const [activeTab, setActiveTab] = useState("mobile");
 
-  const productsList = {
-    compute: {
-      title: "Edge Compute",
-      badge: "Serverless",
-      headline: "Run code close to your users without cold starts.",
+  const servicesList = {
+    mobile: {
+      title: "Mobile Development",
+      badge: "iOS & Android",
+      headline: "Native and cross-platform mobile apps built to convert.",
       description:
-        "Deploy lightweight JS/TS/Wasm functions across our 24 edge regions instantly. Experience automatic horizontal scaling, zero server maintenance, and sub-15ms cold start times.",
+        "We design and build mobile experiences that users return to. From React Native to Flutter and native Swift/Kotlin, we choose the right stack for your timeline.",
       features: [
-        "V8 sandbox isolation for absolute security",
-        "Supports standard Web APIs and npm modules",
-        "Integrated edge Key-Value storage access",
-        "CPU allocation autoscales up to 4 Cores per sandbox",
+        "Cross-platform and native development",
+        "App Store and Play Store launch support",
+        "Offline-first architecture and push notifications",
+        "Performance testing and crash analytics setup",
       ],
-      stat: "12ms",
-      statLabel: "Average Edge Latency",
+      stat: "4.8",
+      statLabel: "Average App Store Rating",
       color: "from-blue-500 to-indigo-600",
       glowColor: "rgba(59,130,246,0.2)",
       iconColor: "text-blue-400",
       badgeBg: "bg-blue-500/10 text-blue-400 border-blue-500/20",
     },
-    databases: {
-      title: "Global Databases",
-      badge: "Distributed SQL",
-      headline: "Multi-region database replication with active-active setups.",
+    web: {
+      title: "Web Development",
+      badge: "Modern Stack",
+      headline: "Fast, SEO-friendly websites and web apps.",
       description:
-        "A distributed relational database engine that scales read/write performance globally. Get automatic cross-region failovers, consistent transactions, and scaling down to zero.",
+        "We build with React, Next.js, and modern CMS tools. Whether it’s a marketing site, SaaS dashboard, or e-commerce store, we deliver performance and scalability.",
       features: [
-        "Active-active read replication globally",
-        "PostgreSQL and MongoDB interface compatibility",
-        "Zero-downtime schema migrations",
-        "Automatic point-in-time recovery (PITR) backups",
+        "Next.js and React best practices",
+        "Headless CMS and API integrations",
+        "SEO, Core Web Vitals, and analytics",
+        "Hosting, CI/CD, and maintenance",
       ],
-      stat: "99.999%",
-      statLabel: "Database Uptime SLA",
+      stat: "< 1s",
+      statLabel: "Average Page Load Time",
       color: "from-cyan-500 to-blue-600",
       glowColor: "rgba(6,182,212,0.2)",
       iconColor: "text-cyan-400",
       badgeBg: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
     },
-    cdn: {
-      title: "Smart CDN & Routing",
-      badge: "Edge Delivery",
-      headline: "Ultra-fast assets caching and smart traffic routing.",
+    design: {
+      title: "UI/UX Design",
+      badge: "Product Design",
+      headline: "Interfaces that feel obvious and look premium.",
       description:
-        "Deliver static assets and media at lightning-fast speeds. Optimize compression formats on-the-fly and deploy intelligent Anycast DNS mapping for dynamic network routes.",
+        "We start with user research and wireframes, then move to high-fidelity designs and interactive prototypes. The result is a design system your team can actually use.",
       features: [
-        "Global Anycast DNS resolving under 8ms",
-        "Brotli and WebP image optimization on-the-fly",
-        "Custom SSL certificate provisioning (Let's Encrypt)",
-        "Edge routing rules using wildcard redirects",
+        "User flows, wireframes, and prototypes",
+        "Design systems and component libraries",
+        "Usability testing and iteration",
+        "Handoff-ready specs for developers",
       ],
-      stat: "24+",
-      statLabel: "Anycast Edge Points",
-      color: "from-teal-500 to-emerald-600",
-      glowColor: "rgba(20,184,166,0.2)",
-      iconColor: "text-teal-400",
-      badgeBg: "bg-teal-500/10 text-teal-400 border-teal-500/20",
-    },
-    cli: {
-      title: "CLI & DevTools",
-      badge: "Developer Experience",
-      headline: "Command-line tools built for rapid iteration loops.",
-      description:
-        "Test functions locally using exact edge environment matches. Push new versions via Git hooks, stream real-time logs directly to your shell, and analyze bottlenecks using the CLI dashboard.",
-      features: [
-        "Local sandbox replication offline",
-        "CI/CD native GitHub Action runners integration",
-        "Real-time console stdout stream filtering",
-        "Config file setup via buildhub.yaml files",
-      ],
-      stat: "4.2s",
-      statLabel: "Average Push-to-Live Time",
+      stat: "92",
+      statLabel: "Average Client NPS Score",
       color: "from-violet-500 to-purple-600",
       glowColor: "rgba(139,92,246,0.2)",
       iconColor: "text-violet-400",
       badgeBg: "bg-violet-500/10 text-violet-400 border-violet-500/20",
     },
+    growth: {
+      title: "Product & Growth",
+      badge: "Go-To-Market",
+      headline: "Strategy, launches, and content that drive adoption.",
+      description:
+        "Product management and social media strategy under one roof. We define roadmaps, plan sprints, and build launch campaigns so your product gets noticed.",
+      features: [
+        "Product roadmaps and sprint planning",
+        "Content strategy and brand voice",
+        "Social media and community management",
+        "Analytics, KPIs, and growth loops",
+      ],
+      stat: "3x",
+      statLabel: "Average Launch Engagement Lift",
+      color: "from-amber-500 to-orange-600",
+      glowColor: "rgba(245,158,11,0.2)",
+      iconColor: "text-amber-400",
+      badgeBg: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+    },
   };
 
   return (
     <div className="bg-[#FAFBFD] min-h-screen py-16 lg:py-24 relative overflow-hidden">
-      {/* Background */}
       <div className="absolute inset-0 tech-grid-bg opacity-30 pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-blue-50/80 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-container-max mx-auto px-margin-desktop flex flex-col gap-16 relative">
-        
-        {/* Header */}
+      <div className="max-w-container-max mx-auto px-margin-desktop flex flex-col gap-14 relative">
+
         <div className="text-center max-w-3xl mx-auto flex flex-col items-center gap-4">
           <div className="inline-flex items-center bg-blue-50 text-blue-600 border border-blue-200 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider">
-            Our Offerings
+            Our Services
           </div>
           <h1
             className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight"
             style={{ fontFamily: "'Outfit', sans-serif" }}
           >
-            Industrial-Grade{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
-              Infrastructure Products
-            </span>
+            Everything you need to
+            <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent"> launch and grow</span>
           </h1>
           <p className="text-base sm:text-lg text-slate-500 leading-relaxed">
-            Purpose-built tools designed to support your application at any scale, with absolute performance and control.
+            One team covering mobile, web, design, product, and growth. Pick what you need, or let us handle the full build.
           </p>
         </div>
 
-        {/* Tab Navigation */}
-          <div className="flex flex-wrap justify-center gap-2 p-1.5 bg-slate-100 border border-slate-200 rounded-2xl max-w-xl mx-auto">
-          {Object.keys(productsList).map((key) => {
-            const prod = productsList[key as keyof typeof productsList];
+        <div className="flex flex-wrap justify-center gap-2 p-1.5 bg-slate-100 border border-slate-200 rounded-2xl max-w-3xl mx-auto">
+          {Object.keys(servicesList).map((key) => {
+            const service = servicesList[key as keyof typeof servicesList];
             const active = activeTab === key;
             return (
               <button
@@ -127,38 +122,34 @@ function Products() {
                     : "text-slate-500 hover:text-slate-700 hover:bg-slate-100"
                 }`}
               >
-                {prod.title}
+                {service.title}
               </button>
             );
           })}
         </div>
 
-        {/* Tab Content Display */}
         {(() => {
-          const activeProduct = productsList[activeTab as keyof typeof productsList];
+          const activeService = servicesList[activeTab as keyof typeof servicesList];
           return (
-            <div className="bg-white border border-slate-100 rounded-3xl p-8 lg:p-12 shadow-md grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative overflow-hidden">
-              {/* Background glow for active tab */}
+            <div className="bg-white border border-slate-100 rounded-3xl p-8 lg:p-12 shadow-md grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative overflow-hidden">
               <div
                 className="absolute -top-16 -right-16 w-64 h-64 rounded-full blur-3xl pointer-events-none opacity-40"
-                style={{ background: activeProduct.glowColor }}
+                style={{ background: activeService.glowColor }}
               />
 
-              {/* Product Info (Left) */}
-              <div className="lg:col-span-7 flex flex-col items-start gap-6 text-left relative">
-                <span className={`text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border ${activeProduct.badgeBg}`}>
-                  {activeProduct.badge}
+              <div className="lg:col-span-7 flex flex-col items-start gap-5 text-left relative">
+                <span className={`text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border ${activeService.badgeBg}`}>
+                  {activeService.badge}
                 </span>
                 <h2 className="text-2xl lg:text-3xl font-extrabold text-slate-900 leading-tight">
-                  {activeProduct.headline}
+                  {activeService.headline}
                 </h2>
                 <p className="text-slate-500 leading-relaxed text-sm">
-                  {activeProduct.description}
+                  {activeService.description}
                 </p>
 
-                {/* Features List */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mt-2">
-                  {activeProduct.features.map((feature, i) => (
+                  {activeService.features.map((feature, i) => (
                     <div key={i} className="flex gap-2.5 items-start">
                       <div className="w-5 h-5 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mt-0.5 shrink-0">
                         <span className="material-symbols-outlined text-[10px] font-bold">check</span>
@@ -173,44 +164,42 @@ function Products() {
                     to="/contact"
                     className="relative bg-blue-600 hover:bg-blue-700 text-white text-center font-semibold text-sm px-6 py-3.5 rounded-xl shadow-[0_2px_12px_rgba(59,130,246,0.3)] hover:shadow-[0_4px_20px_rgba(59,130,246,0.5)] transition-all cursor-pointer"
                   >
-                    <span className="relative z-10">Deploy to Edge</span>
+                    <span className="relative z-10">Book a Call</span>
                     <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </Link>
                   <Link
-                    to="/contact"
+                    to="/about"
                     className="border border-slate-200 hover:border-blue-300 bg-white hover:bg-blue-50 text-slate-700 hover:text-blue-600 text-center font-semibold text-sm px-6 py-3.5 rounded-xl transition-all cursor-pointer"
                   >
-                    Contact Sales
+                    Meet the Team
                   </Link>
                 </div>
               </div>
 
-              {/* Product Stat Visualizer (Right) */}
-              <div className="lg:col-span-5 relative w-full h-full min-h-[250px] flex items-center justify-center">
+              <div className="lg:col-span-5 relative w-full h-full min-h-[240px] flex items-center justify-center">
                 <div
-                  className={`absolute inset-0 bg-gradient-to-tr ${activeProduct.color} rounded-2xl opacity-8 blur-2xl`}
+                  className={`absolute inset-0 bg-gradient-to-tr ${activeService.color} rounded-2xl opacity-8 blur-2xl`}
                 />
                 <div className="bg-[#060F1E] border border-blue-500/12 rounded-2xl w-full p-8 text-center text-white relative shadow-[0_0_40px_rgba(0,0,0,0.4)] flex flex-col items-center justify-center gap-2 overflow-hidden">
-                  {/* Inner glow */}
                   <div
                     className="absolute inset-0 rounded-2xl opacity-30"
-                    style={{ background: `radial-gradient(ellipse at 50% 0%, ${activeProduct.glowColor}, transparent 60%)` }}
+                    style={{ background: `radial-gradient(ellipse at 50% 0%, ${activeService.glowColor}, transparent 60%)` }}
                   />
                   <span className="text-slate-600 uppercase tracking-widest text-[10px] font-mono relative z-10">
-                    Performance Metric
+                    Client Result
                   </span>
                   <span
-                    className={`text-5xl font-extrabold tracking-tight font-mono my-2 relative z-10 ${activeProduct.iconColor}`}
-                    style={{ textShadow: `0 0 30px ${activeProduct.glowColor.replace('0.2', '0.6')}` }}
+                    className={`text-5xl font-extrabold tracking-tight font-mono my-2 relative z-10 ${activeService.iconColor}`}
+                    style={{ textShadow: `0 0 30px ${activeService.glowColor.replace('0.2', '0.6')}` }}
                   >
-                    {activeProduct.stat}
+                    {activeService.stat}
                   </span>
                   <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider relative z-10">
-                    {activeProduct.statLabel}
+                    {activeService.statLabel}
                   </span>
                   <div className="w-full border-t border-blue-500/10 mt-6 pt-4 flex justify-between text-[10px] font-mono text-slate-600 relative z-10">
-                    <span>STATUS: ACTIVE</span>
-                    <span>REGION: GLBL</span>
+                    <span>STATUS: DELIVERED</span>
+                    <span>TEAM: BUILDUP</span>
                   </div>
                 </div>
               </div>
@@ -219,56 +208,63 @@ function Products() {
           );
         })()}
 
-        {/* Feature Matrix / Comparison Table */}
         <div className="bg-white border border-slate-100 rounded-3xl p-6 lg:p-8 shadow-sm flex flex-col gap-6">
           <div className="text-left flex flex-col gap-1">
-            <h3 className="text-xl font-extrabold text-slate-900">Comparing Infrastructure Tiers</h3>
-            <p className="text-xs text-slate-500 font-mono">Choose the optimal plan for your development needs.</p>
+            <h3 className="text-xl font-extrabold text-slate-900">How we engage</h3>
+            <p className="text-xs text-slate-500 font-mono">Flexible collaboration models for different stages and team needs.</p>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="border-b border-slate-200 text-slate-500 uppercase tracking-wider font-bold">
-                  <th className="py-4">Tier Feature</th>
-                  <th className="py-4">Developer (Free)</th>
-                  <th className="py-4 text-blue-400">Pro ($29/mo)</th>
-                  <th className="py-4">Enterprise</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-600 font-medium">
-                <tr className="hover:bg-white/2 transition-colors">
-                  <td className="py-4 text-slate-300">Deployments Limit</td>
-                  <td className="py-4">3 active projects</td>
-                  <td className="py-4 text-blue-400">Unlimited projects</td>
-                  <td className="py-4">Unlimited + Custom orgs</td>
-                </tr>
-                <tr className="hover:bg-white/2 transition-colors">
-                  <td className="py-4 text-slate-300">Edge Cold Starts</td>
-                  <td className="py-4">&lt; 50ms</td>
-                  <td className="py-4 text-blue-400">&lt; 15ms</td>
-                  <td className="py-4">0ms (Warm Sandboxes)</td>
-                </tr>
-                <tr className="hover:bg-white/2 transition-colors">
-                  <td className="py-4 text-slate-300">Database Replication</td>
-                  <td className="py-4">Single region</td>
-                  <td className="py-4 text-blue-400">Dual region failover</td>
-                  <td className="py-4">Global active-active</td>
-                </tr>
-                <tr className="hover:bg-white/2 transition-colors">
-                  <td className="py-4 text-slate-300">Custom SSL Domains</td>
-                  <td className="py-4">Included</td>
-                  <td className="py-4 text-blue-400">Included + Wildcard</td>
-                  <td className="py-4">Dedicated IP block support</td>
-                </tr>
-                <tr className="hover:bg-white/2 transition-colors">
-                  <td className="py-4 text-slate-300">Uptime SLA</td>
-                  <td className="py-4">Best effort</td>
-                  <td className="py-4 text-blue-400">99.9% Uptime</td>
-                  <td className="py-4">99.999% Dedicated SLA</td>
-                </tr>
-              </tbody>
-            </table>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              {
+                name: "Fixed Project",
+                desc: "Defined scope and timeline, delivered as a complete package. Best for MVPs, websites, and app launches.",
+                features: ["Clear deliverables", "Milestone-based delivery", "Ideal for launches"],
+              },
+              {
+                name: "Retainer",
+                desc: "Ongoing design, development, and growth support. Best for startups with continuous product work.",
+                features: ["Dedicated team slots", "Priority support", "Regular check-ins"],
+                highlighted: true,
+              },
+              {
+                name: "Co-Founder Mode",
+                desc: "Embedded product partner for early-stage founders. We act like part of your core team.",
+                features: ["Roadmap ownership", "Investor-ready demos", "Long-term partnership"],
+              },
+            ].map((plan) => (
+              <div
+                key={plan.name}
+                className={`rounded-2xl p-6 flex flex-col gap-4 border ${
+                  plan.highlighted
+                    ? "bg-blue-600 border-blue-500 text-white shadow-[0_0_40px_rgba(59,130,246,0.25)]"
+                    : "bg-white border-slate-200 text-slate-700"
+                }`}
+              >
+                <div>
+                  <p className={`text-xs font-bold uppercase tracking-wider ${plan.highlighted ? "text-blue-100" : "text-slate-500"}`}>{plan.name}</p>
+                </div>
+                <p className={`text-xs leading-relaxed ${plan.highlighted ? "text-blue-100" : "text-slate-500"}`}>{plan.desc}</p>
+                <ul className="flex flex-col gap-2 mt-1">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-xs font-medium">
+                      <span className={`material-symbols-outlined text-sm ${plan.highlighted ? "text-blue-200" : "text-blue-500"}`}>check</span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to="/contact"
+                  className={`mt-auto text-center text-sm font-semibold py-2.5 rounded-xl transition-all ${
+                    plan.highlighted
+                      ? "bg-white text-blue-700 hover:bg-blue-50"
+                      : "border border-slate-200 hover:border-blue-300 hover:text-blue-600"
+                  }`}
+                >
+                  Talk to us
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
 

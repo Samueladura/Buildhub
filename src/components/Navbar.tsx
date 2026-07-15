@@ -32,7 +32,6 @@ function Navbar() {
       }`}
     >
       <div className="max-w-container-max mx-auto px-margin-desktop flex items-center justify-between h-full">
-        {/* Logo */}
         <NavLink to="/" className="flex items-center gap-2.5 group">
           <div className="relative">
             <img
@@ -49,12 +48,11 @@ function Navbar() {
           </span>
         </NavLink>
 
-        {/* Navigation Links — Desktop */}
         <div className="hidden md:flex items-center gap-8">
           {[
             { to: "/", label: "Home" },
             { to: "/about", label: "About" },
-            { to: "/products", label: "Products" },
+            { to: "/products", label: "Services" },
             { to: "/contact", label: "Contact" },
           ].map(({ to, label }) => (
             <NavLink key={to} to={to} end={to === "/"} className={navLinkClass}>
@@ -70,15 +68,13 @@ function Navbar() {
           ))}
         </div>
 
-        {/* CTA Buttons */}
         <div className="hidden md:flex items-center gap-3">
           <Link to="/contact" className="relative bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-95 shadow-[0_2px_12px_rgba(59,130,246,0.35)] hover:shadow-[0_4px_20px_rgba(59,130,246,0.45)] cursor-pointer overflow-hidden group">
-            <span className="relative z-10">Get Started</span>
+            <span className="relative z-10">Start a Project</span>
             <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </Link>
         </div>
 
-        {/* Mobile hamburger */}
         <button
           className="md:hidden w-9 h-9 flex flex-col gap-1.5 items-center justify-center rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -90,13 +86,12 @@ function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-slate-100 px-6 py-4 flex flex-col gap-3 shadow-lg">
           {[
             { to: "/", label: "Home" },
             { to: "/about", label: "About" },
-            { to: "/products", label: "Products" },
+            { to: "/products", label: "Services" },
             { to: "/contact", label: "Contact" },
           ].map(({ to, label }) => (
             <NavLink
@@ -117,7 +112,7 @@ function Navbar() {
           ))}
           <div className="flex gap-3 pt-2 border-t border-slate-100">
             <Link to="/contact" className="flex-1 bg-blue-600 text-white text-center text-sm font-semibold px-4 py-2.5 rounded-xl cursor-pointer">
-              Get Started
+              Start a Project
             </Link>
           </div>
         </div>
