@@ -124,11 +124,11 @@ function Hero() {
                   {[
                     { label: "Avg Latency", value: "12ms", sub: "↓ 4% vs last hr", subColor: "text-green-400" },
                     { label: "Reliability", value: "99.99%", sub: "Uptime active", subColor: "text-green-400" },
-                    { label: "Edge Regions", value: "24 / 24", sub: "All Healthy", subColor: "text-slate-400" },
+                    { label: "Edge Regions", value: "24 / 24", sub: "All Healthy", subColor: "text-green-400" },
                   ].map((stat) => (
                     <div key={stat.label} className="bg-white border border-slate-100 p-3 rounded-xl flex flex-col gap-1 hover:border-blue-200 transition-colors duration-200 group">
                       <span className="text-slate-600 text-[9px] uppercase tracking-wider">{stat.label}</span>
-                      <span className="text-white text-sm font-bold group-hover:text-blue-600 transition-colors">{stat.value}</span>
+                      <span className="text-slate-200 text-sm font-bold group-hover:text-blue-600 transition-colors">{stat.value}</span>
                       <span className={`text-[9px] ${stat.subColor}`}>{stat.sub}</span>
                     </div>
                   ))}
