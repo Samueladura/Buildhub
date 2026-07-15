@@ -91,7 +91,7 @@ function Footer() {
 
       <div className="max-w-container-max mx-auto px-margin-desktop mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-slate-600 gap-4 relative">
         <div className="font-mono">
-          © 2024 Buildhub Technologies Inc. All rights reserved.
+          © 2026 Buildhub Team. All rights reserved.
         </div>
         <div className="flex gap-6">
           <a href="#" className="hover:text-slate-400 transition-colors">Privacy Policy</a>
