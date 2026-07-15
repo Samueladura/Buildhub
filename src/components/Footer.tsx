@@ -32,7 +32,7 @@ function Footer() {
             </span>
           </div>
           <p className="text-sm text-slate-500 leading-relaxed max-w-xs">
-            Empowering developers with industrial-grade infrastructure and visionary tools since 2024.
+            Empowering developers with industrial-grade infrastructure and visionary tools since 2026.
           </p>
           {/* Status indicator */}
           <div className="inline-flex items-center gap-2 bg-green-500/8 border border-green-500/15 rounded-full px-3 py-1.5 w-fit shadow-[0_0_12px_rgba(34,197,94,0.08)]">
